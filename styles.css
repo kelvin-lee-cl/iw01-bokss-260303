@@ -1,0 +1,118 @@
+/* Optional CSS to enhance the modal */
+.modal-body {
+    padding: 0;
+    position: relative;
+}
+
+.btn-close {
+    background-color: white;
+    opacity: 0.8;
+    z-index: 1;
+}
+
+.btn-close:hover {
+    opacity: 1;
+}
+
+/* Responsive font sizes */
+@media (max-width: 1120px) {
+    .responsive-title {
+        font-size: 1.2rem;
+        /* Adjusted for medium screens */
+    }
+}
+
+@media (max-width: 768px) {
+    .responsive-title {
+        font-size: 1rem;
+        /* Adjusted for small screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .responsive-title {
+        font-size: 1rem;
+        /* Further adjustment for extra small screens */
+    }
+}
+
+li.active {
+    font-weight: bold;
+}
+
+.fade-in {
+    opacity: 0;
+    transition: opacity 0.5s ease-in;
+}
+
+.fade-in.visible {
+    opacity: 1;
+}
+
+.description {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border-left: 5px solid #dc3545;
+    /* Bootstrap danger color to match your button */
+}
+
+.description h5 {
+    color: #dc3545;
+    font-weight: 600;
+    position: relative;
+    padding-left: 15px;
+}
+
+.description h5::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 5px;
+    height: 20px;
+    background-color: #dc3545;
+    border-radius: 3px;
+}
+
+.description p {
+    line-height: 1.8;
+    color: #4a4a4a;
+}
+
+.description ul li {
+    position: relative;
+    padding-left: 25px;
+    line-height: 1.8;
+    color: #4a4a4a;
+    transition: transform 0.2s ease;
+}
+
+.description ul li:hover {
+    transform: translateX(5px);
+}
+
+.description ul li::before {
+    content: '•';
+    color: #dc3545;
+    font-size: 1.5em;
+    position: absolute;
+    left: 0;
+    top: -2px;
+}
+
+@media (max-width: 768px) {
+    .description {
+        padding: 1.5rem;
+        margin: 1rem 0;
+    }
+}
+
+#userIdDisplay {
+    font-size: 0.9rem;
+    padding: 8px 15px;
+    border-radius: 4px;
+    background-color: #f8f9fa;
+}

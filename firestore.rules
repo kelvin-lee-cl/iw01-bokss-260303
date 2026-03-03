@@ -1,0 +1,11 @@
+rules_version = '2';
+// Firestore 規則：讓課堂提交能寫入 submissions。
+// 在 Firebase Console → Firestore → 規則 中貼上並發布，或使用 firebase deploy --only firestore:rules
+// 專案 iw01-bokss-260303（本網站使用此專案）
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /submissions/{docId} {
+      allow read, write: if true;
+    }
+  }
+}

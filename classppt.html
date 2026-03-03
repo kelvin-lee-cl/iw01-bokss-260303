@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>AI storytelling workshop</title>
+        <meta name="description"
+                content="IW06: Storytelling is a 4-lesson AI workshop for students aged 8-9. Participants will learn to leverage generative AI tools for creative writing, and storytelling. Through hands-on exercises, students will unlock new realms of narrative possibility by generating original text, images, and audio to bring their stories to life. For those seeking deeper practice, a 12-hour IW06 Practicum is available to further enhance Gen-AI arts skills. This workshop offers a unique opportunity to explore the intersection of technology and imagination. Prepare for an extraordinary adventure in AI-powered storytelling.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+        <style>
+                :root {
+                        --primary-color: #4A90E2;
+                        --secondary-color: #F5F7FA;
+                        --text-color: #2C3E50;
+                        --border-color: #E5E9F2;
+                        --hover-color: #357ABD;
+                }
+
+                body {
+                        color: var(--text-color);
+                        background-color: #FFFFFF;
+                        line-height: 1.6;
+                        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+                }
+
+                .text-rotator {
+                        position: relative;
+                        display: flex;
+                        overflow: hidden;
+                }
+
+                .text-item {
+                        position: absolute;
+                        opacity: 0;
+                        transition: opacity 0.5s ease-in-out;
+                }
+
+                .text-item.active {
+                        opacity: 1;
+                }
+
+                .button-container {
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: center;
+                        position: relative;
+                        top: 300px;
+                }
+
+                .headline-container {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                }
+
+
+                .btn {
+                        color: white;
+                        border: none;
+                        border-radius: 5px;
+                        padding: 10px 20px;
+                        margin: 0 10px;
+                        cursor: pointer;
+                        transition: background-color 0.3s;
+                }
+
+                .btn hover {
+                        background-color: #ffffff;
+                }
+
+                h4.mb-3 {
+                        font-weight: 600;
+                        color: var(--text-color);
+                        margin: 2rem 0;
+                        padding-bottom: 0.5rem;
+                        border-bottom: 2px solid var(--border-color);
+                }
+
+                .btn-primary {
+                        background-color: var(--primary-color);
+                        border: none;
+                        padding: 0.75rem 1.5rem;
+                        transition: all 0.3s ease;
+                }
+
+                .btn-primary:hover {
+                        background-color: var(--hover-color);
+                        transform: translateY(-1px);
+                }
+
+                .form-control {
+                        border: 1px solid var(--border-color);
+                        border-radius: 8px;
+                        padding: 1rem;
+                        transition: all 0.3s ease;
+                }
+
+                .form-control:focus {
+                        border-color: var(--primary-color);
+                        box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.1);
+                }
+
+                .scrollable-textarea {
+                        background-color: var(--secondary-color);
+                        border: 1px solid var(--border-color);
+                }
+
+
+                iframe {
+                        border-radius: 12px;
+                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+                }
+
+                .headline-container img {
+                        max-width: 100%;
+                        height: auto;
+                        margin: 1rem 0;
+                }
+
+                @media (max-width: 576px) {
+                        .container {
+                                padding: 1rem;
+                        }
+
+                        .responsive-text {
+                                font-size: 14px;
+                                /* Adjust for small screens */
+                        }
+
+                        .button-container {
+                                display: none;
+                        }
+
+                        .text-item h3 {
+                                font-size: 16px;
+                        }
+
+                        .headline-container img {
+                                width: 100%;
+                                padding: 10%;
+                        }
+                }
+
+                @media (min-width: 577px) and (max-width: 768px) {
+                        .responsive-text {
+                                font-size: 16px;
+                                /* Adjust for medium screens */
+                        }
+
+                        .button-container {
+                                display: none;
+                        }
+
+                        .text-item h3 {
+                                font-size: 18px;
+                        }
+                }
+
+                @media (min-width: 769px) and (max-width: 992px) {
+                        .responsive-text {
+                                font-size: 18px;
+                                /* Adjust for large screens */
+                        }
+
+                        .button-container {
+                                display: none;
+                        }
+
+                        .text-item h3 {
+                                font-size: 20px;
+                        }
+                }
+
+                @media (min-width: 993px) and (max-width: 1200px) {
+                        .responsive-text {
+                                font-size: 20px;
+                                /* Adjust for extra large screens */
+                        }
+
+                        .button-container {
+                                display: none;
+                        }
+
+                }
+
+                @media (min-width: 1201px) and (max-width: 1400px) {
+                        .responsive-text {
+                                font-size: 22px;
+                                /* Adjust for larger extra large screens */
+                        }
+
+                        .button-container {
+                                display: none;
+                        }
+                }
+
+                @media (min-width: 1401px) and (max-width: 1600px) {
+                        .responsive-text {
+                                font-size: 24px;
+                                /* Adjust for even larger screens */
+                        }
+
+                }
+
+                @media (min-width: 1601px) and (max-width: 18000px) {
+                        .responsive-text {
+                                font-size: 26px;
+                                /* Adjust for very large screens up to 18,000 pixels */
+                        }
+                }
+
+                .scrollable-textarea {
+                        height: 200px;
+                        /* Set a fixed height */
+                        overflow-y: auto;
+                        /* Enable vertical scrolling */
+                }
+
+                #sectionTitle {
+                        transition: opacity 0.3s ease;
+                        margin-left: 1rem;
+                        font-weight: 500;
+                }
+
+
+                /* ... existing styles ... */
+
+                .section-box {
+                        background-color: #ffffff;
+                        border-radius: 16px;
+                        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.05);
+                        padding: 2rem;
+                        margin: 1rem 0;
+                        transition: all 0.3s ease;
+                }
+
+                .section-box:hover {
+                        box-shadow: 0 6px 28px rgba(0, 0, 0, 0.08);
+                        transform: translateY(-2px);
+                }
+
+
+                .section-box img.round {
+                        border-radius: 12px;
+                        transition: transform 0.3s ease;
+                }
+
+                .section-box {
+                        background-color: transparent;
+                        padding: 1.5rem;
+                        border-radius: 12px;
+                }
+
+                @media (max-width: 768px) {
+                        .section-box {
+                                padding: 1rem;
+                        }
+                }
+
+                li.active {
+                        font-weight: bold;
+                }
+        </style>
+</head>
+
+<body>
+        <!-- ==================== 1. 導航區 ==================== -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light px-5 fixed-top">
+                <a class="navbar-brand" href="https://future-leaders-union.odoo.com/zh_TW"
+                        style="padding:5px; margin-top:5px" target="_blank">
+                        <img class="mx-4" src="./images/FLU_logo2.png" width="100" class="d-inline-block align-top">
+                </a>
+                <a href="https://www.bokss.org.hk/">
+                        <img src="https://www.bokss.org.hk/images/logo.png" height="60"
+                                class="d-inline-block align-top "
+                                style="padding:5px; margin-right:20px; margin-top: 7px" alt="" target="_blank"></a>
+                <span id="userIdDisplay" class="d-none text-secondary me-3">用戶: <span id="userId"></span></span>
+
+                <span id="sectionTitle" class="navbar-text d-none">
+                        第一節: 創造故事內容
+                </span>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="justify-content-end collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ml-auto mx-2">
+                                <li class="nav-item">
+                                        <a class="nav-link" href="index.html">主頁</a>
+                                </li>
+                                <li class="nav-item active">
+                                        <a class="nav-link" href="classppt.html">教學簡報</a>
+                                </li>
+                                <li class="nav-item d-none" id="teacherArea">
+                                        <a class="nav-link" href="teacherdashboard.html" target="_blank">學生提交箱</a>
+                                </li>
+                                <li class="nav-item">
+                                        <a class="nav-link" href="portfolio/studentproject.html">學生作品</a>
+                                </li>
+                                <li class="nav-item d-none">
+                                        <a class="nav-link" href="assessment.html">實習題目</a>
+                                </li>
+                                <li class="nav-item d-none">
+                                        <a class="nav-link" href="teamproject.html">團隊項目</a>
+                                </li>
+                                <button onclick="logout()" class="btn btn-secondary" style="display: none;"
+                                        id="logoutBtn">登出</button>
+                        </ul>
+                </div>
+
+        </nav>
+        <div style="margin-top: 90px;">
+        </div>
+        <div class="container mb-5">
+                <hr>
+                <!-- 課堂切換 Tabs -->
+                <div class="d-flex align-items-center mb-3">
+                        <ul class="nav nav-pills" id="lessonTabs">
+                                <li class="nav-item">
+                                        <button class="nav-link active" type="button" data-lesson="1">第一課</button>
+                                </li>
+                                <li class="nav-item d-none">
+                                        <button class="nav-link" type="button" data-lesson="2">第二課</button>
+                                </li>
+                                <li class="nav-item d-none">
+                                        <button class="nav-link" type="button" data-lesson="3">第三課</button>
+                                </li>
+                                <li class="nav-item d-none">
+                                        <button class="nav-link" type="button" data-lesson="4">第四及五課</button>
+                                </li>
+                        </ul>
+                </div>
+
+
+                <!-- 第一課 -->
+                <div class="lesson-section" data-lesson-section="1">
+                        <div class="section-box row flex-grow-2 mt-5 fade-in">
+                                <!-- Left: Slides and buttons -->
+                                <div class="col-12 col-md-6 order-md-1">
+                                        <!-- Slide Show Start -->
+                                        <div id="slideShowContainer" class="mb-3">
+                                                <div class="d-flex flex-column align-items-center">
+                                                        <img id="mainSlideImage"
+                                                                class="js-slide-img img-fluid rounded border"
+                                                                src="images/slides_lesson1/1.jpg"
+                                                                style="max-height:400px;object-fit:contain;"
+                                                                alt="Slide 1">
+                                                        <div
+                                                                class="mt-2 d-flex justify-content-center align-items-center">
+                                                                <button type="button"
+                                                                        class="btn btn-outline-secondary btn-sm me-2 js-slide-prev"
+                                                                        id="prevSlideBtn">
+                                                                        <img src="images/icon/left-arrow.png"
+                                                                                style="width: 30px; height: 30px; margin-right: 10px;">
+                                                                </button>
+                                                                <span id="slideNumber" class="js-slide-num mx-2"
+                                                                        style="font-size: 20px; margin-right: 10px">1
+                                                                        /
+                                                                        28</span>
+                                                                <button type="button"
+                                                                        class="btn btn-outline-secondary btn-sm ms-2 js-slide-next"
+                                                                        id="nextSlideBtn">
+                                                                        <img src="images/icon/left-arrow (1).png"
+                                                                                style="width: 30px; height: 30px; margin-right: 10px;">
+                                                                </button>
+                                                        </div>
+                                                </div>
+                                        </div>
+                                        <!-- Slide Show End -->
+                                        <div class="d-flex justify-content-between">
+                                                <button type="button" class="btn btn-primary"
+                                                        onclick="window.open('https://recraft.ai/', '_blank')">Recraft
+                                                        AI
+                                                </button>
+                                        </div>
+                                </div>
+                                <!-- Right: 課堂重點 -->
+                                <div
+                                        class="col-12 col-md-6 order-md-2 d-flex justify-content-end flex-column justify-content-center align-items-center">
+                                        <div class="fs-4 mt-5 mt-md-0">
+                                                <h6 class="fs-3">第一課</h6>
+                                                <h6 class="fs-4">課堂重點</h6>
+                                                <ul>
+                                                        <li>✍️ 故事編寫概念</li>
+                                                        <li>🔄 繪本創作流程</li>
+                                                        <li>🤖 英語翻譯</li>
+                                                </ul>
+                                        </div>
+                                </div>
+
+                                <div class="container mt-5 order-md-2">
+                                        <h2>課堂練習提交箱:</h2>
+                                        <ul class="nav nav-tabs mb-3" id="storyTabs1" role="tablist">
+                                                <li class="nav-item" role="presentation">
+                                                        <button class="nav-link active" id="tab2-1" data-bs-toggle="tab"
+                                                                data-bs-target="#content2-1" type="button"
+                                                                role="tab">1.1</button>
+                                                </li>
+                                                <li class="nav-item" role="presentation">
+                                                        <button class="nav-link" id="tab2-2" data-bs-toggle="tab"
+                                                                data-bs-target="#content2-2" type="button"
+                                                                role="tab">1.2</button>
+                                                </li>
+                                        </ul>
+
+                                        <form id="dataForm_ws1" class="text-submission-elements">
+                                                <div class="tab-content" id="storyTabContent1">
+                                                        <!-- Tab 1.1 -->
+                                                        <div class="tab-pane fade show active" id="content2-1"
+                                                                role="tabpanel">
+                                                                <div class="form-outline">
+                                                                        <textarea type="text" id="richTextInput2-1"
+                                                                                name="id2-1"
+                                                                                class="form-control scrollable-textarea"
+                                                                                rows="10" placeholder="試以六何法「何人(Who), 何事(What), 何時(When),何地(Where), 為何(Why), 如何(How)」組織成一句主題句
+主題：動物的秘密社會：講述動物們在城市中成立秘密組織的冒險故事。
+           外星人來香港：外星人在香港的日常生活，探索人類文化的搞笑故事。"></textarea>
+                                                                        <label class="form-label"
+                                                                                for="richTextInput2-1">1.1 </label>
+                                                                </div>
+                                                        </div>
+
+                                                        <!-- Tab 1.2 -->
+                                                        <div class="tab-pane fade" id="content2-2" role="tabpanel">
+                                                                <div class="form-outline">
+                                                                        <textarea type="text" id="richTextInput2-2"
+                                                                                name="id2-2"
+                                                                                class="form-control scrollable-textarea"
+                                                                                rows="10"
+                                                                                placeholder="起:&#10;承:&#10;轉:&#10;合:"></textarea>
+                                                                        <label class="form-label"
+                                                                                for="richTextInput2-2">1.2
+                                                                                試根據「起承轉合」來設計情節，豐富主題句和故事</label>
+                                                                </div>
+                                                        </div>
+
+
+                                                        <!-- Tab 1.4 -->
+                                                        <div class="tab-pane fade" id="content2-4" role="tabpanel"
+                                                                d-none>
+                                                                <div class="form-outline">
+                                                                        <textarea type="text" id="richTextInput2-4"
+                                                                                name="id2-4"
+                                                                                class="form-control scrollable-textarea"
+                                                                                rows="10"></textarea>
+                                                                        <label class="form-label"
+                                                                                for="richTextInput2-4">1.3
+                                                                                請輸入你的英文故事</label>
+                                                                </div>
+                                                        </div>
+
+
+                                                </div>
+
+                                                <div class="d-flex justify-content-between mt-3">
+                                                        <div class="btn-group d-none d-md-flex" role="group"
+                                                                aria-label="Font Size Controls">
+                                                                <button type="button" class="btn btn-primary"
+                                                                        onclick="changeFontSize(-2)">Smaller</button>
+                                                                <button type="button" class="btn btn-primary"
+                                                                        onclick="changeFontSize(2)">Bigger</button>
+                                                        </div>
+
+                                                        <button type="button" class="btn btn-primary"
+                                                                id="submitTextBtn1"
+                                                                data-loading-text="上傳中...">提交</button>
+                                                        <button type="button" class="btn btn-warning"
+                                                                id="testFirebaseBtn"
+                                                                onclick="testFirebaseConnection()">Test
+                                                                Firebase</button>
+                                                        <input class="d-none" type="text" id="name1" name="name"
+                                                                value=currentUserId required>
+                                                </div>
+                                        </form>
+                                </div>
+
+
+                                <div class="container order-md-2" id="photoUploadSection" d-none>
+                                        <h4 class="mb-3">上傳故事圖片</h4>
+
+                                        <div class="row">
+                                                <div class="col-12">
+                                                        <div class="mb-3">
+                                                                <label for="imageName" class="form-label">圖片名稱</label>
+                                                                <input type="text" class="form-control" id="imageName1"
+                                                                        placeholder="請輸入圖片名稱">
+                                                        </div>
+
+                                                        <div class="mb-3">
+                                                                <label for="imageUpload" class="form-label">選擇圖片</label>
+                                                                <input type="file" class="form-control"
+                                                                        id="imageUpload1" multiple accept="image/*">
+                                                        </div>
+
+                                                        <div class="mb-3">
+                                                                <div id="imagePreview" class="d-flex flex-wrap gap-3">
+                                                                        <!-- Preview images will be displayed here -->
+                                                                </div>
+                                                        </div>
+
+                                                        <button type="button" class="btn btn-primary"
+                                                                id="uploadButton1">上傳圖片</button>
+                                                        <button type="button" class="btn btn-primary"
+                                                                id="viewPhotosButton">查看圖片</button>
+                                                </div>
+                                        </div>
+                                </div>
+                        </div>
+                </div>
+        </div>
+        <div class="modal fade" id="presentationModal" tabindex="-1" aria-labelledby="presentationModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-fullscreen">
+                        <div class="modal-content">
+                                <div class="modal-header">
+                                        <h5 class="modal-title" id="presentationModalLabel">簡報</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body" id="modalIframeContainer">
+                                        <!-- iframe will be inserted here -->
+                                </div>
+                        </div>
+                </div>
+        </div>
+        <div class="modal fade" id="photosModal2" tabindex="-1" aria-labelledby="photosModalLabel2" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                                <div class="modal-header">
+                                        <h5 class="modal-title" id="photosModalLabel2">已上傳的圖片</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                        <div id="photoGallery2" class="d-flex flex-wrap gap-3">
+                                                <!-- Photos will be displayed here -->
+                                        </div>
+                                </div>
+                        </div>
+                </div>
+        </div>
+        <div class="modal fade" id="photosModal3" tabindex="-1" aria-labelledby="photosModalLabel3" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                                <div class="modal-header">
+                                        <h5 class="modal-title" id="photosModalLabel3">已上傳的圖片</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                        <div id="photoGallery3" class="d-flex flex-wrap gap-3">
+                                                <!-- Photos will be displayed here -->
+                                        </div>
+                                </div>
+                        </div>
+                </div>
+        </div>
+        <div class="modal fade" id="photosModal" tabindex="-1" aria-labelledby="photosModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                                <div class="modal-header">
+                                        <h5 class="modal-title" id="photosModalLabel">已上傳的圖片</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                        <div id="photoGallery" class="d-flex flex-wrap gap-3">
+                                                <!-- Photos will be displayed here -->
+                                        </div>
+                                </div>
+                        </div>
+                </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script type="module">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                // ==================== 4.1 Firebase 初始化與全局變數 ====================
+                import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+                import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-analytics.js";
+                import { getStorage, ref, uploadBytes, getDownloadURL, listAll } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-storage.js";
+                import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+                const firebaseConfig = {
+                        apiKey: "AIzaSyC-yuLzNuwAI9WjtaTczyIU371Ircbw31M",
+                        authDomain: "iw01-bokss-260303.firebaseapp.com",
+                        projectId: "iw01-bokss-260303",
+                        storageBucket: "iw01-bokss-260303.firebasestorage.app",
+                        messagingSenderId: "778796723219",
+                        appId: "1:778796723219:web:577576c889cdf8f252a3e6",
+                        measurementId: "G-60Q26SB1LJ"
+                };
+                const app = initializeApp(firebaseConfig);
+                const analytics = getAnalytics(app);
+                const storage = getStorage(app);
+                const db = getFirestore(app);
+                window.fbApp = app;
+                window.fbDb = db;
+                window.fbStorage = storage;
+                window.fbServerTimestamp = serverTimestamp;
+                window.fbAddDoc = addDoc;
+                window.fbCollection = collection;
+                window.fbRef = ref;
+                window.fbListAll = listAll;
+                window.fbGetDownloadURL = getDownloadURL;
+                window.fbUploadBytes = uploadBytes;
+                function setupLessonSubmit(formId, btnId, textareaIds, labelSelectors) {
+                        const submitBtn = document.getElementById(btnId);
+                        if (!submitBtn) return;
+                        submitBtn.addEventListener('click', async function () {
+                                const originalText = submitBtn.textContent;
+                                submitBtn.disabled = true;
+                                submitBtn.textContent = submitBtn.getAttribute('data-loading-text') || "上傳中...";
+                                const currentUserId = localStorage.getItem('currentUserId');
+                                if (!currentUserId) {
+                                        alert('請先登入！');
+                                        submitBtn.disabled = false;
+                                        submitBtn.textContent = originalText;
+                                        return;
+                                }
+                                let hasSubmission = false;
+                                let errorOccurred = false;
+                                let lastError = '';
+                                for (const id of textareaIds) {
+                                        const textarea = document.getElementById(id);
+                                        if (textarea && textarea.value.trim()) {
+                                                hasSubmission = true;
+                                                const section = id.replace('richTextInput', '');
+                                                const result = await uploadText(textarea.value, section, currentUserId, 'ws1');
+                                                if (!result.ok) {
+                                                        errorOccurred = true;
+                                                        if (result.error) lastError = result.error;
+                                                }
+                                        }
+                                }
+                                if (!hasSubmission) {
+                                        alert('請先輸入內容再提交！');
+                                } else if (errorOccurred) {
+                                        const msg = lastError ? '提交失敗：' + lastError + '\n\n如為權限錯誤，請在 Firebase Console 的 Firestore 規則中允許寫入 submissions 集合。' : '有部分內容提交失敗，請檢查網絡或稍後再試。';
+                                        alert(msg);
+                                } else {
+                                        textareaIds.forEach(id => { const t = document.getElementById(id); if (t) t.value = ''; });
+                                        document.querySelectorAll(labelSelectors).forEach(label => { label.textContent = `成功提交`; });
+                                }
+                                submitBtn.disabled = false;
+                                submitBtn.textContent = originalText;
+                        });
+                }
+                setupLessonSubmit('dataForm_ws1', 'submitTextBtn1', ['richTextInput2-1', 'richTextInput2-2'], '#storyTabContent1 .form-label');
+                setupLessonSubmit('dataForm_ws2_lesson2', 'submitTextBtn2', ['richTextInput3-1', 'richTextInput3-2'], '#storyTabContent2 .form-label');
+                setupLessonSubmit('dataForm_ws2_lesson3', 'submitTextBtn3', ['richTextInput4-1', 'richTextInput4-2'], '#storyTabContent3 .form-label');
+                setupLessonSubmit('dataForm_ws2_lesson4', 'submitTextBtn4', ['richTextInput5-1', 'richTextInput5-2'], '#storyTabContent4 .form-label');
+                /**
+                 * 通用文字上傳函數
+                 * @param {string} text - 要上傳的內容
+                 * @param {string} section - 章節/欄位標記
+                 * @param {string} userId - 用戶ID
+                 * @param {string} workshop - 工作坊標記
+                 * @returns {Promise<string|false>} - 成功回傳文件ID，失敗回傳 false
+                 */
+                export async function uploadText(text, section, userId, workshop) {
+                        if (!window.fbDb || !window.fbAddDoc || !window.fbCollection) {
+                                console.error('Firebase 未初始化');
+                                return { ok: false, error: 'Firebase 未初始化' };
+                        }
+                        if (!text || !userId || !section || !workshop) {
+                                console.error('缺少必要參數');
+                                return { ok: false, error: '缺少必要參數' };
+                        }
+                        const submissionData = {
+                                content: text.trim(),
+                                userId: userId,
+                                timestamp: window.fbServerTimestamp ? window.fbServerTimestamp() : new Date(),
+                                section: section,
+                                workshop: workshop
+                        };
+                        try {
+                                const docRef = await window.fbAddDoc(
+                                        window.fbCollection(window.fbDb, 'submissions'),
+                                        submissionData
+                                );
+                                return { ok: true, id: docRef.id };
+                        } catch (error) {
+                                console.error('Firebase upload error:', error);
+                                const code = (error && error.code) ? error.code : '';
+                                const msg = (error && error.message) ? error.message : String(error);
+                                const full = code ? `[${code}] ${msg}` : msg;
+                                return { ok: false, error: full };
+                        }
+                }
+                window.uploadText = uploadText;
+                /**
+                 * 上傳圖片到 Firebase Storage，並處理 UI 狀態
+                 * @param {FileList|File[]} files - 來自 <input type="file"> 的 files
+                 * @param {string} imageName - 圖片名稱
+                 * @param {string} userId - 用戶ID
+                 * @param {HTMLElement} imagePreview - 預覽區塊
+                 * @param {HTMLElement} uploadButton - 上傳按鈕
+                 */
+                async function uploadImage(files, imageName, userId, imagePreview, uploadButton) {
+                        if (!files.length || !imageName) {
+                                alert('請選擇圖片並輸入名稱');
+                                return;
+                        }
+                        try {
+                                uploadButton.disabled = true;
+                                uploadButton.textContent = '上傳中...';
+                                for (let i = 0; i < files.length; i++) {
+                                        const file = files[i];
+                                        const timestamp = Date.now();
+                                        const fileName = `${userId}_ws1_${imageName}_${i}`;
+                                        const storageRef = window.fbRef(window.fbStorage, `stories/${fileName}`);
+                                        await window.fbUploadBytes(storageRef, file);
+                                        const downloadURL = await window.fbGetDownloadURL(storageRef);
+                                        // 你可以在這裡處理 downloadURL，例如顯示圖片
+                                        console.log('File uploaded:', downloadURL);
+                                }
+                                alert('圖片上傳成功！'); location.reload();
+                                if (imagePreview) imagePreview.innerHTML = '';
+                        } catch (error) {
+                                console.error('Upload error:', error);
+                                alert('上傳失敗，請重試');
+                        } finally {
+                                uploadButton.disabled = false;
+                                uploadButton.textContent = '上傳圖片';
+                                if (files && files[0] && files[0].ownerDocument) {
+                                        // 清空 input
+                                        files[0].ownerDocument.getElementById(uploadButton.id.replace('uploadButton', 'imageUpload')).value = '';
+                                        files[0].ownerDocument.getElementById(uploadButton.id.replace('uploadButton', 'imageName')).value = '';
+                                }
+                        }
+                }
+                // 綁定所有圖片上傳按鈕
+                const uploadBtn1 = document.getElementById('uploadButton1');
+                const uploadBtn2 = document.getElementById('uploadButton2');
+                const uploadBtn3 = document.getElementById('uploadButton3');
+                const uploadBtn4 = document.getElementById('uploadButton4');
+                const imageInput1 = document.getElementById('imageUpload1');
+                const imageInput2 = document.getElementById('imageUpload2');
+                const imageInput3 = document.getElementById('imageUpload3');
+                const imageInput4 = document.getElementById('imageUpload4');
+                const imageNameInput1 = document.getElementById('imageName1');
+                const imageNameInput2 = document.getElementById('imageName2');
+                const imageNameInput3 = document.getElementById('imageName3');
+                const imageNameInput4 = document.getElementById('imageName4');
+                const imagePreview1 = document.getElementById('imagePreview1') || document.getElementById('imagePreview');
+                const imagePreview2 = document.getElementById('imagePreview2') || document.getElementById('imagePreview');
+                const imagePreview3 = document.getElementById('imagePreview3') || document.getElementById('imagePreview');
+                const imagePreview4 = document.getElementById('imagePreview4') || document.getElementById('imagePreview');
+                if (uploadBtn1 && imageInput1 && imageNameInput1) {
+                        uploadBtn1.addEventListener('click', async function () {
+                                const userId = localStorage.getItem('currentUserId');
+                                await uploadImage(imageInput1.files, imageNameInput1.value, userId, imagePreview1, uploadBtn1);
+                        });
+                        uploadBtn2.addEventListener('click', async function () {
+                                const userId = localStorage.getItem('currentUserId');
+                                await uploadImage(imageInput2.files, imageNameInput2.value, userId, imagePreview2, uploadBtn2);
+                        });
+                        uploadBtn3.addEventListener('click', async function () {
+                                const userId = localStorage.getItem('currentUserId');
+                                await uploadImage(imageInput3.files, imageNameInput3.value, userId, imagePreview3, uploadBtn3);
+                        });
+                        uploadBtn4.addEventListener('click', async function () {
+                                const userId = localStorage.getItem('currentUserId');
+                                await uploadImage(imageInput4.files, imageNameInput4.value, userId, imagePreview4, uploadBtn4);
+                        });
+                };
+        </script>
+        <script>
+                // ...原有非module JS保留...
+        </script>
+        <script src="script.js"></script>
+</body>
+
+</html>

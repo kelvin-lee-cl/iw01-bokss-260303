@@ -1,0 +1,11 @@
+rules_version = '2';
+// Firebase Storage 規則：讓課堂能上傳圖片到 stories/。
+// 在 Firebase Console → Storage → 規則 中貼上並發布。
+// 專案 iw01-bokss-260303（與 classppt.html / teacherdashboard.html 一致）
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /stories/{allPaths=**} {
+      allow read, write: if true;
+    }
+  }
+}

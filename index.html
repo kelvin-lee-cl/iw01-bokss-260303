@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="style_home.css">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+
+    <title>IW01 - AI storytelling workshop</title>
+
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light px-5 fixed-top">
+        <div>
+            <a class="navbar-brand" href="https://future-leaders-union.odoo.com/zh_TW" target="_blank">
+                <img class="mx-4" src="./images/FLU_logo2.png" width="100" class="d-inline-block align-top" alt="">
+            </a>
+            <a href="https://www.bokss.org.hk/">
+                <img src="https://www.bokss.org.hk/images/logo.png" height="60" class="d-inline-block align-top "
+                    style="padding:5px; margin-top:8px" alt="" target="_blank"></a>
+        </div>
+
+        <span id="userIdDisplay" class="d-none text-secondary me-3">用戶: <span id="userId"></span></span>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="justify-content-end collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto mx-2">
+                <li class="nav-item active">
+                    <a class="nav-link" href="index.html">主頁</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="classppt.html">教學簡報</a>
+                </li>
+                <li class="nav-item d-none" id="teacherArea">
+                    <a class="nav-link" href="teacherdashboard.html" target="_blank">學生提交箱</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="portfolio/studentproject.html">學生作品</a>
+                </li>
+                <li class="nav-item d-none">
+                    <a class="nav-link" href="assessment.html">實習題目</a>
+                </li>
+                <li class="nav-item d-none">
+                    <a class="nav-link" href="teamproject.html">團隊項目</a>
+                </li>
+                <button onclick="logout()" class="btn btn-secondary" style="display: none;" id="logoutBtn">登出</button>
+            </ul>
+        </div>
+    </nav>
+
+
+
+    <div class="container">
+        <div class="row flex-grow-2 mt-5 pt-4 fade-in">
+            <div class="col-12  col-md-6 col-sm-12 order-md-2">
+                <img class="img-fluid round" src="images/hero_img.png">
+            </div>
+
+            <div class="col-12 col-md-6 order-md-1 d-flex align-items-center">
+                <div>
+                    <p><i>2026.03.05 - 2026.04.5 // 共4節 和 分組項目 </i></p>
+                    <h1 class="responsive-title">英語繪本創作工作坊</h1>
+                    <h1 class="responsive-title">從故事創作開始，<br>讓英語學習變得更有趣</h1>
+
+                    <button class="btn btn-danger btn-lg mt-5" data-bs-toggle="modal"
+                        data-bs-target="#loginModal">登入</button>
+
+                </div>
+            </div>
+        </div>
+        <hr>
+        <h3> 學生作品 </h3>
+        <div class="row overflow-auto flex-nowrap fade-in">
+            <div class="col-11 col-md-9 col-lg-6 col-xl-5">
+                <img class="img-fluid round aspectRatioBox" src="highlight/1.jpg" data-bs-toggle="modal"
+                    data-bs-target="#imageModal" onclick="setImage(0)">
+            </div>
+            <div class="col-11 col-md-9 col-lg-6 col-xl-5">
+                <img class="img-fluid round aspectRatioBox" src="highlight/2.jpg" data-bs-toggle="modal"
+                    data-bs-target="#imageModal" onclick="setImage(1)">
+            </div>
+            <div class="col-11 col-md-9 col-lg-6 col-xl-5">
+                <img class="img-fluid round aspectRatioBox" src="highlight/3.jpg" data-bs-toggle="modal"
+                    data-bs-target="#imageModal" onclick="setImage(2)">
+            </div>
+            <div class="col-11 col-md-9 col-lg-6 col-xl-5">
+                <img class="img-fluid round aspectRatioBox" src="highlight/4.jpg" data-bs-toggle="modal"
+                    data-bs-target="#imageModal" onclick="setImage(3)">
+            </div>
+            <div class="col-11 col-md-9 col-lg-6 col-xl-5">
+                <img class="img-fluid round aspectRatioBox" src="highlight/5.jpg" data-bs-toggle="modal"
+                    data-bs-target="#imageModal" onclick="setImage(4)">
+            </div>
+            <div class="col-11 col-md-9 col-lg-6 col-xl-5">
+                <img class="img-fluid round aspectRatioBox" src="highlight/6.jpg" data-bs-toggle="modal"
+                    data-bs-target="#imageModal" onclick="setImage(5)">
+            </div>
+            <div class="col-11 col-md-9 col-lg-6 col-xl-5">
+                <img class="img-fluid round aspectRatioBox" src="highlight/7.jpg" data-bs-toggle="modal"
+                    data-bs-target="#imageModal" onclick="setImage(6)">
+            </div>
+            <div class="col-11 col-md-9 col-lg-6 col-xl-5">
+                <img class="img-fluid round aspectRatioBox" src="highlight/8.jpg" data-bs-toggle="modal"
+                    data-bs-target="#imageModal" onclick="setImage(7)">
+            </div>
+            <div class="col-11 col-md-9 col-lg-6 col-xl-5">
+                <img class="img-fluid round aspectRatioBox" src="highlight/9.jpg" data-bs-toggle="modal"
+                    data-bs-target="#imageModal" onclick="setImage(8)">
+            </div>
+            <div class="col-11 col-md-9 col-lg-6 col-xl-5">
+                <img class="img-fluid round aspectRatioBox" src="highlight/10.jpg" data-bs-toggle="modal"
+                    data-bs-target="#imageModal" onclick="setImage(9)">
+            </div>
+            <div class="col-11 col-md-9 col-lg-6 col-xl-5">
+                <img class="img-fluid round aspectRatioBox" src="highlight/11.jpg" data-bs-toggle="modal"
+                    data-bs-target="#imageModal" onclick="setImage(10)">
+            </div>
+            <div class="col-11 col-md-9 col-lg-6 col-xl-5">
+                <img class="img-fluid round aspectRatioBox" src="highlight/12.jpg" data-bs-toggle="modal"
+                    data-bs-target="#imageModal" onclick="setImage(11)">
+            </div>
+        </div>
+        <hr>
+        <h3> 課堂工具一覽 </h3>
+        <div class="row fade-in">
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="row">
+                    <div class="col-xs-6 col-sm-6 col-lg-12 col-md-12">
+                        <a href="https://scribehow.com/shared/_POE_and_ChatGPT__8FrCkH5iRC61BjmlKgI6Tg" target="_blank">
+                            <div class="card video-card">
+                                <img class="img-fluid round card-img-top" src="tools_slides/1_slide.png">
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-xs-6 col-sm-6 col-lg-12 col-md-12">
+                        <p class="fs-6 mt-3" style="text-align:center;"><a href="https://poe.com/"
+                                target="_blank"><b>POE-AI</b></a></p>
+                        <p class="fs-6 fs-sm-5 mt-2"> 人工智能聊天機器人平台，可通過聊天指令提示指定內容，支持多國語言，適用於日常文書處理。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="row">
+                    <div class="col-xs-6 col-sm-6 col-lg-12 col-md-12">
+                        <a href="https://scribehow.com/shared/_Storytribe__j7d6cIKCQVaHV7dWHLniiw" target="_blank">
+                            <div class="card video-card">
+                                <img class="img-fluid round card-img-top" src="tools_slides/2_slide.png">
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-xs-6 col-sm-6 col-lg-12 col-md-12">
+                        <p class="fs-6 fs-sm-5 mt-2" style="text-align: center"> <a href="https://storytribeapp.com/"
+                                target="_blank"><b>StoryTribe App</b></a></p>
+                        <p class="fs-6 fs-sm-5 mt-2"> StoryTribe應用程式讓用戶輕鬆創建故事板，支持角色自定義、場景設計及多國語言，適合創作者用於視覺敘事和故事表達。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="row">
+                    <div class="col-xs-6 col-sm-6 col-lg-12 col-md-12">
+                        <a href="https://scribehow.com/shared/Recraft_AI__w556GO5JQ9OGdSXBl3HIgg" target="_blank">
+                            <div class="card video-card">
+                                <img class="img-fluid round card-img-top" src="tools_slides/3_slide.png">
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-xs-6 col-sm-6 col-lg-12 col-md-12">
+                        <p class="fs-6 fs-sm-5 mt-2" style="text-align: center"> <a href="https://www.recraft.ai/"
+                                target="_blank"><b>Recraft AI</b></a></p>
+                        <p class="fs-6 fs-sm-5 mt-2"> 圖像生成人工智能，通過指令創作插畫並持續修改，擅長生成向量圖，適用於設計師及其相關工作。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="row">
+                    <div class="col-xs-6 col-sm-6 col-lg-12 col-md-12">
+                        <a href="https://scribehow.com/shared/Recraft_AI__w556GO5JQ9OGdSXBl3HIgg" target="_blank">
+                            <div class="card video-card">
+                                <img class="img-fluid round card-img-top" src="tools_slides/4_slide.png">
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-xs-6 col-sm-6 col-lg-12 col-md-12">
+                        <a href="https://scribehow.com/shared/Canva__l3nGaxlOQ2arIJzgVmg6Sw" target="_blank">
+                            <p class="fs-6 fs-sm-5 mt-2" style="text-align: center"> <a href="https://canva.com/"
+                                    target="_blank"><b>Canva</b></a></p>
+                            <p class="fs-6 fs-sm-5 mt-2"> Canva是一個多功能設計平台，提供用戶簡單易用的工具來創建各種視覺內容，包括海報、社交媒體圖像和演示文稿。</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+
+    <script src="https://kit.fontawesome.com/e067495424.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <!-- Modal Structure -->
+    <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="imageModalLabel">學生作品</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body d-flex justify-content-center align-items-center">
+                    <img id="modalImage" class="img-fluid" src="" alt=""
+                        style="max-height: 80vh; max-width: 90vw; object-fit: contain;">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                    <button type="button" class="btn btn-primary" id="prevBtn" onclick="changeImage(-1)">上一張</button>
+                    <button type="button" class="btn btn-primary" id="nextBtn" onclick="changeImage(1)">下一張</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">登入</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="loginForm">
+                        <div class="mb-3 mx-4">
+                            <label for="passcode" class="mt-4 form-label">密碼 (4位)</label>
+                            <input type="text" class="form-control" id="passcode" maxlength="4" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary mx-4 mb-4">確認</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="script.js"></script>
+
+
+
+</body>
+
+</html>
