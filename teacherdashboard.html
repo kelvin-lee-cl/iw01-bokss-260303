@@ -24,6 +24,7 @@
         </div>
 
         <span id="userIdDisplay" class="text-secondary me-3"> 學生提交箱</span>
+        <span id="votesRemainingDisplay" class="text-secondary me-3 d-none"></span>
 
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -39,17 +40,11 @@
                 <li class="nav-item">
                     <a class="nav-link" href="classppt.html">教學簡報</a>
                 </li>
-                <li class="nav-item d-none" id="teacherArea">
+                <li class="nav-item" id="teacherArea">
                     <a class="nav-link" href="teacherdashboard.html" target="_blank">學生提交箱</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="portfolio/studentproject.html">學生作品</a>
-                </li>
-                <li class="nav-item d-none">
-                    <a class="nav-link" href="assessment.html">實習題目</a>
-                </li>
-                <li class="nav-item d-none">
-                    <a class="nav-link" href="teamproject.html">團隊項目</a>
                 </li>
                 <button onclick="logout()" class="btn btn-secondary" style="display: none;" id="logoutBtn">登出</button>
             </ul>
@@ -91,7 +86,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
         import { getStorage, ref, listAll, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-storage.js";
-        import { getFirestore, collection, getDocs, query, orderBy, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, query, orderBy, deleteDoc, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 
         // Your Firebase config
         const firebaseConfig = {
@@ -112,9 +107,17 @@
         // Reference to the stories folder
         const storiesRef = ref(storage, 'stories');
 
+        const MAX_VOTES_PER_USER = 3;
+        function getVotesCollection() { return collection(db, 'votes'); }
+        function getVoteDocId(voterId, submissionId) {
+            return 'v_' + voterId + '_' + String(submissionId).replace(/\//g, '_').slice(0, 200);
+        }
+
         let allImages = []; // Store all images data
         let allTextSubmissions = []; // Store all text submissions data
         let allSubmissions = []; // Combined array for unified display
+        let voteCountBySubmissionId = {}; // submissionId -> number of votes
+        let userVotedSubmissionIds = new Set(); // submissionIds the current user has voted for
 
         // Function to load all images
         async function loadImages() {
@@ -171,9 +174,47 @@
         // Function to combine and update all submissions
         function updateCombinedSubmissions() {
             allSubmissions = [...allImages, ...allTextSubmissions];
-            // Sort by timestamp (newest first)
             allSubmissions.sort((a, b) => b.timestamp - a.timestamp);
+            loadVotes();
+        }
+
+        // Load votes from Firestore and then redraw cards
+        async function loadVotes() {
+            const uid = localStorage.getItem('currentUserId');
+            voteCountBySubmissionId = {};
+            userVotedSubmissionIds = new Set();
+            try {
+                const snap = await getDocs(getVotesCollection());
+                snap.docs.forEach((d) => {
+                    const data = d.data();
+                    const sid = data.submissionId;
+                    if (!sid) return;
+                    voteCountBySubmissionId[sid] = (voteCountBySubmissionId[sid] || 0) + 1;
+                    if (data.voterId === uid) userVotedSubmissionIds.add(sid);
+                });
+            } catch (err) {
+                console.error('Error loading votes:', err);
+            }
             filterAndDisplaySubmissions();
+            updateVotesRemainingDisplay();
+        }
+
+        function updateVotesRemainingDisplay() {
+            const el = document.getElementById('votesRemainingDisplay');
+            const uid = localStorage.getItem('currentUserId');
+            if (!el) return;
+            if (!uid) {
+                el.classList.add('d-none');
+                return;
+            }
+            el.classList.remove('d-none');
+            const used = userVotedSubmissionIds.size;
+            el.textContent = `你的票數: ${used}/${MAX_VOTES_PER_USER}`;
+        }
+
+        // Only the same user can delete their own image/submission
+        function getUserIdFromFilename(name) {
+            return name ? name.split('_')[0] : '';
         }
 
         // Function to filter and display all submissions
@@ -181,6 +222,7 @@
             const userFilter = document.getElementById('userFilter').value.toLowerCase();
             const workshopFilter = document.getElementById('workshopFilter').value;
             const contentTypeFilter = document.getElementById('contentTypeFilter').value;
+            const loggedInUserId = localStorage.getItem('currentUserId');
 
             const filteredSubmissions = allSubmissions.filter(submission => {
                 const matchesUser = !userFilter || submission.userId.toLowerCase().includes(userFilter);
@@ -195,6 +237,20 @@
             filteredSubmissions.forEach(submission => {
                 const col = document.createElement('div');
                 col.className = 'col-md-4 mb-4';
+                const canDelete = loggedInUserId && submission.userId === loggedInUserId;
+                const submissionId = submission.id;
+                const voteCount = voteCountBySubmissionId[submissionId] || 0;
+                const isOwn = loggedInUserId && submission.userId === loggedInUserId;
+                const hasVotedThis = userVotedSubmissionIds.has(submissionId);
+                const votesLeft = MAX_VOTES_PER_USER - userVotedSubmissionIds.size;
+                const canVote = loggedInUserId && !isOwn && !hasVotedThis && votesLeft > 0;
+                const canUnvote = loggedInUserId && hasVotedThis;
+                const voteBtnHtml = canVote
+                    ? `<button class="btn btn-outline-primary btn-sm vote-btn" data-submission-id="${submissionId.replace(/"/g, '&quot;')}" data-target-user-id="${submission.userId}" data-submission-type="${submission.type}"><i class="fas fa-thumbs-up"></i> Vote</button>`
+                    : '';
+                const unvoteBtnHtml = canUnvote
+                    ? `<button class="btn btn-outline-secondary btn-sm unvote-btn" data-submission-id="${submissionId.replace(/"/g, '&quot;')}"><i class="fas fa-thumbs-down"></i> Unvote</button>`
+                    : '';
 
                 if (submission.type === 'image') {
                     col.innerHTML = `
@@ -206,10 +262,15 @@
                                 <p class="card-text"><strong>Workshop:</strong> ${submission.workshop}</p>
                                 <p class="card-text"><strong>Filename:</strong> ${submission.name}</p>
                                 <p class="card-text"><strong>Timestamp:</strong> ${submission.timestamp.toLocaleString()}</p>
-                                <div class="mt-auto">
-                                    <button class="btn btn-danger delete-btn" data-filename="${submission.name}">
+                                <p class="card-text mb-1"><strong>Votes:</strong> <span class="vote-count" data-submission-id="${submissionId.replace(/"/g, '&quot;')}">${voteCount}</span></p>
+                                <div class="mt-auto d-flex flex-wrap gap-1">
+                                    ${voteBtnHtml}
+                                    ${unvoteBtnHtml}
+                                    ${canDelete ? `
+                                    <button class="btn btn-danger delete-btn" data-filename="${submission.name}" data-user-id="${submission.userId}">
                                         <i class="fas fa-trash"></i> Delete
                                     </button>
+                                    ` : '<span class="text-muted small">只能刪除自己的圖片</span>'}
                                 </div>
                             </div>
                         </div>
@@ -227,10 +288,15 @@
                                     ${submission.content.replace(/\n/g, '<br>')}
                                 </div>
                                 <p class="card-text"><strong>Timestamp:</strong> ${submission.timestamp.toLocaleString()}</p>
-                                <div class="mt-auto">
-                                    <button class="btn btn-danger delete-text-btn" data-id="${submission.id}">
+                                <p class="card-text mb-1"><strong>Votes:</strong> <span class="vote-count" data-submission-id="${submissionId.replace(/"/g, '&quot;')}">${voteCount}</span></p>
+                                <div class="mt-auto d-flex flex-wrap gap-1">
+                                    ${voteBtnHtml}
+                                    ${unvoteBtnHtml}
+                                    ${canDelete ? `
+                                    <button class="btn btn-danger delete-text-btn" data-id="${submission.id}" data-user-id="${submission.userId}">
                                         <i class="fas fa-trash"></i> Delete
                                     </button>
+                                    ` : '<span class="text-muted small">只能刪除自己的提交</span>'}
                                 </div>
                             </div>
                         </div>
@@ -240,15 +306,21 @@
                 container.appendChild(col);
             });
 
-            // Add event listeners to delete buttons
+            // Add event listeners to delete buttons (only same user can delete)
             document.querySelectorAll('.delete-btn').forEach(button => {
                 button.addEventListener('click', async (e) => {
+                    const btn = e.currentTarget;
+                    const filename = btn.dataset.filename;
+                    const imageUserId = getUserIdFromFilename(filename);
+                    const uid = localStorage.getItem('currentUserId');
+                    if (!uid || imageUserId !== uid) {
+                        alert('只能刪除自己的圖片。');
+                        return;
+                    }
                     if (confirm('Are you sure you want to delete this image?')) {
-                        const filename = e.target.dataset.filename;
                         try {
                             const imageRef = ref(storage, `stories/${filename}`);
                             await deleteObject(imageRef);
-                            // Refresh the image list
                             loadImages();
                             alert('Image deleted successfully!');
                         } catch (error) {
@@ -261,17 +333,65 @@
 
             document.querySelectorAll('.delete-text-btn').forEach(button => {
                 button.addEventListener('click', async (e) => {
+                    const btn = e.currentTarget;
+                    if (btn.dataset.userId !== localStorage.getItem('currentUserId')) {
+                        alert('只能刪除自己的提交。');
+                        return;
+                    }
                     if (confirm('Are you sure you want to delete this submission?')) {
-                        const docId = e.target.dataset.id;
+                        const docId = btn.dataset.id;
                         try {
                             await deleteDoc(doc(db, 'submissions', docId));
-                            // Refresh the submissions list
                             loadTextSubmissions();
                             alert('Submission deleted successfully!');
                         } catch (error) {
                             console.error("Error deleting submission:", error);
                             alert('Failed to delete submission. Please try again.');
                         }
+                    }
+                });
+            });
+
+            // Vote: each user can vote 3 times, cannot vote for self; can unvote
+            document.querySelectorAll('.vote-btn').forEach(button => {
+                button.addEventListener('click', async (e) => {
+                    const btn = e.currentTarget;
+                    const voterId = localStorage.getItem('currentUserId');
+                    if (!voterId) { alert('請先登入才能投票。'); return; }
+                    const submissionId = btn.dataset.submissionId;
+                    const targetUserId = btn.dataset.targetUserId;
+                    if (voterId === targetUserId) { alert('不能投自己。'); return; }
+                    if (userVotedSubmissionIds.size >= MAX_VOTES_PER_USER) { alert('你已用完 3 票。'); return; }
+                    if (userVotedSubmissionIds.has(submissionId)) return;
+                    try {
+                        const voteRef = doc(db, 'votes', getVoteDocId(voterId, submissionId));
+                        await setDoc(voteRef, {
+                            voterId,
+                            submissionId,
+                            targetUserId,
+                            type: btn.dataset.submissionType || 'image'
+                        });
+                        await loadVotes();
+                    } catch (err) {
+                        console.error('Vote error:', err);
+                        alert('投票失敗，請重試。');
+                    }
+                });
+            });
+
+            document.querySelectorAll('.unvote-btn').forEach(button => {
+                button.addEventListener('click', async (e) => {
+                    const btn = e.currentTarget;
+                    const voterId = localStorage.getItem('currentUserId');
+                    if (!voterId) return;
+                    const submissionId = btn.dataset.submissionId;
+                    try {
+                        const voteRef = doc(db, 'votes', getVoteDocId(voterId, submissionId));
+                        await deleteDoc(voteRef);
+                        await loadVotes();
+                    } catch (err) {
+                        console.error('Unvote error:', err);
+                        alert('取消投票失敗，請重試。');
                     }
                 });
             });

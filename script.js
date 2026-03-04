@@ -159,6 +159,24 @@ function logout() {
     location.reload(); // Refresh the page
 }
 
+// Auth helpers: only same user can delete own image; only logged-in users can upload
+function getCurrentUserId() {
+    return localStorage.getItem('currentUserId');
+}
+function isLoggedIn() {
+    return !!getCurrentUserId();
+}
+/** @param {string} filename - e.g. "1_ws1_myimage_0" (userId_workshop_name_index) */
+function canDeleteImage(filename) {
+    if (!filename) return false;
+    const imageUserId = filename.split('_')[0];
+    return getCurrentUserId() === imageUserId;
+}
+// Expose for use in other pages (e.g. teacherdashboard, classppt)
+window.getCurrentUserId = getCurrentUserId;
+window.isLoggedIn = isLoggedIn;
+window.canDeleteImage = canDeleteImage;
+
 // For classppt.html: change font size of focused or first visible textarea in the active lesson
 function changeFontSize(delta) {
     const section = document.querySelector('.lesson-section[data-lesson-section]:not(.d-none)');

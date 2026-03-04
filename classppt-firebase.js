@@ -117,6 +117,10 @@ export async function uploadText(text, section, userId, workshop) {
 window.uploadText = uploadText;
 
 async function uploadImage(files, imageName, userId, imagePreview, uploadButton) {
+        if (!userId) {
+                alert('請先登入才能上傳圖片。');
+                return;
+        }
         if (!files.length || !imageName) {
                 alert('請選擇圖片並輸入名稱');
                 return;
@@ -177,6 +181,7 @@ const imagePreview4 = document.getElementById('imagePreview4') || document.getEl
 if (uploadBtn1 && imageInput1 && imageNameInput1) {
         uploadBtn1.addEventListener('click', async function () {
                 const userId = localStorage.getItem('currentUserId');
+                if (!userId) { alert('請先登入才能上傳圖片。'); return; }
                 await uploadImage(imageInput1.files, imageNameInput1.value, userId, imagePreview1, uploadBtn1);
         });
 }
@@ -184,6 +189,7 @@ if (uploadBtn1 && imageInput1 && imageNameInput1) {
 if (uploadBtn2 && imageInput2 && imageNameInput2) {
         uploadBtn2.addEventListener('click', async function () {
                 const userId = localStorage.getItem('currentUserId');
+                if (!userId) { alert('請先登入才能上傳圖片。'); return; }
                 await uploadImage(imageInput2.files, imageNameInput2.value, userId, imagePreview2, uploadBtn2);
         });
 }
@@ -191,6 +197,7 @@ if (uploadBtn2 && imageInput2 && imageNameInput2) {
 if (uploadBtn3 && imageInput3 && imageNameInput3) {
         uploadBtn3.addEventListener('click', async function () {
                 const userId = localStorage.getItem('currentUserId');
+                if (!userId) { alert('請先登入才能上傳圖片。'); return; }
                 await uploadImage(imageInput3.files, imageNameInput3.value, userId, imagePreview3, uploadBtn3);
         });
 }
@@ -198,6 +205,7 @@ if (uploadBtn3 && imageInput3 && imageNameInput3) {
 if (uploadBtn4 && imageInput4 && imageNameInput4) {
         uploadBtn4.addEventListener('click', async function () {
                 const userId = localStorage.getItem('currentUserId');
+                if (!userId) { alert('請先登入才能上傳圖片。'); return; }
                 await uploadImage(imageInput4.files, imageNameInput4.value, userId, imagePreview4, uploadBtn4);
         });
 }
